@@ -137,6 +137,8 @@ urlpatterns = [
 
     path('tafy/sgcl', views.tafy_sgcl),
 
+    path('spider/nyyw', views.spider_nyyw),
+
 
 
 

@@ -687,3 +687,69 @@ def tafy_sgcl(request):
     data = model.filter(年份=year).values('省份','年份','水果产量_万吨_field')
     return HttpResponse(data, content_type='application/json; charset=utf-8')
 
+
+#爬取  农业要闻 第一页的内容
+def spider_nyyw(request):
+    import json
+    import re
+    import unicodedata
+
+    from bs4 import BeautifulSoup
+    import requests
+    from lxml import etree
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36 Edg/100.0.1185.36'}
+    url = 'http://www.agri.cn/V20/ZX/nyyw/'
+    res = requests.get(url, headers=headers)  # 新闻的网址
+    res.encoding = res.apparent_encoding
+    # 根据网站的编码方式修改解码方式，因为网页的文字编码方式多种多样有UTF-8 GBK这些解码方式如果不一致容易发生乱码，所以解码方式最好不要统一，而是交给网页自己来决定
+    soup = BeautifulSoup(res.text, 'html.parser')
+
+    rates = soup.select('.bj_3-2')
+    rates1 = soup.select('.hui_14')
+
+    # bJson = json.dumps(rates, ensure_ascii=False)
+    #
+    aa = []
+    for data in rates:
+        # print(type(data))
+        bb = {}
+        temp = re.findall(r'\(.+\)', unicodedata.normalize('NFKC', str(data)), re.S)  # 多行匹配 ， 去除Unicode的空格
+        title = re.findall(r'\>(.+)\<', str(temp))
+        herf = re.findall((r'\.\/(.+)\"'), str(temp))
+        url1 = url + herf[0]
+
+        # 爬取新闻体
+        headers1 = {
+            'User-Agent': 'Mozilla/5.0 (Linux; Android 10; Pixel 4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Mobile Safari/537.36'}
+        res1 = requests.get(url1, headers=headers1)
+        res1.encoding = res1.apparent_encoding
+        soup1 = BeautifulSoup(res1.text, 'html.parser')
+
+        rates2 = soup1.select('.hui_12-12')
+        rates3 = soup1.select('.TRS_Editor')
+        daa = re.findall(r'\>(.+)\<', unicodedata.normalize('NFKC', str(rates2)))  # date and author
+        body = re.findall(r'\[(.+)\]',unicodedata.normalize('NFKC', str(rates3)) , re.S)
+        # rates3 = unicodedata.normalize('NFKC', str(rates3))
+        # rates3 = "".join(str(rates3).split())
+        # print(body)
+
+
+
+        bb = {'title': title[0], 'herf': url1, 'date' : 0 ,'daa': daa[0], 'body': body[0]} #,'daa': daa[0], 'body': body[0]
+
+        aa.append(bb)
+
+    i = 0
+    for data in rates1:
+        date = re.findall(r'\((.+)\)', str(data))
+        # print(str(date))
+        aa[i]['date'] = date[0]
+        i += 1
+
+    # print(aa)
+
+
+    return HttpResponse(json.dumps(aa, ensure_ascii=False),content_type='application/json; charset=utf-8')
+
