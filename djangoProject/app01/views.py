@@ -11,6 +11,7 @@ from django.http import HttpResponse
 from django.core import serializers
 # Create your views here.
 from app01 import models
+from rest_framework.decorators import APIView
 
 
 # python manage.py runserver 192.168.123.8:8000
@@ -688,15 +689,34 @@ def tafy_sgcl(request):
     return HttpResponse(data, content_type='application/json; charset=utf-8')
 
 
-#爬取  农业要闻 第一页的内容
+#手动爬取  农业要闻 第一页的内容
 def spider_nyyw(request):
-    import json
+    nyyw_run()
+    return HttpResponse('农业要闻更新成功！！')
+
+
+def nyyw_title(request):
+    model = models.Nyyw.objects
+    data = model.values('id', 'title', 'date')
+    return HttpResponse(data, content_type='application/json; charset=utf-8')
+
+class nyyw_body(APIView):
+
+    def get(self,request):
+        model = models.Nyyw.objects
+        id = request.GET.get("id")
+        data = model.filter(id = id).values('title', 'daa', 'herf', 'picherf', 'body')
+        return HttpResponse(data, content_type='application/json; charset=utf-8')
+
+
+# 自动爬取 农业要闻第一页的数据
+def nyyw_run():
+
     import re
     import unicodedata
 
     from bs4 import BeautifulSoup
     import requests
-    from lxml import etree
 
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36 Edg/100.0.1185.36'}
@@ -709,16 +729,17 @@ def spider_nyyw(request):
     rates = soup.select('.bj_3-2')
     rates1 = soup.select('.hui_14')
 
-    # bJson = json.dumps(rates, ensure_ascii=False)
-    #
+
     aa = []
     for data in rates:
         # print(type(data))
-        bb = {}
+        # bb = {}
         temp = re.findall(r'\(.+\)', unicodedata.normalize('NFKC', str(data)), re.S)  # 多行匹配 ， 去除Unicode的空格
         title = re.findall(r'\>(.+)\<', str(temp))
         herf = re.findall((r'\.\/(.+)\"'), str(temp))
         url1 = url + herf[0]
+        url2 = url + herf[0].split('/')[0]
+        url3 = ""
 
         # 爬取新闻体
         headers1 = {
@@ -729,16 +750,22 @@ def spider_nyyw(request):
 
         rates2 = soup1.select('.hui_12-12')
         rates3 = soup1.select('.TRS_Editor')
+
         daa = re.findall(r'\>(.+)\<', unicodedata.normalize('NFKC', str(rates2)))  # date and author
-        body = re.findall(r'\[(.+)\]',unicodedata.normalize('NFKC', str(rates3)) , re.S)
-        # rates3 = unicodedata.normalize('NFKC', str(rates3))
-        # rates3 = "".join(str(rates3).split())
-        # print(body)
+        body = re.findall(r'\[(.+)\]', unicodedata.normalize('NFKC', str(rates3)), re.S)
 
+        picherf = re.findall(r'src\=\"(.+?)\" src\=\"', unicodedata.normalize('NFKC', str(body)))
 
+        for i in picherf:
+            url3 = url3 + url2 + "/" + i + " "
 
-        bb = {'title': title[0], 'herf': url1, 'date' : 0 ,'daa': daa[0], 'body': body[0]} #,'daa': daa[0], 'body': body[0]
+        body1 = body[0]
+        body1 = body1.replace("\"", "\'")
+        body1 = body1.replace("\n", "")
+        # print(body1)
 
+        bb = {'id': 0, 'title': title[0], 'herf': url1, 'date': 0, 'daa': daa[0], 'body': body1, 'picherf': url3}
+        # print(type(body[0]))
         aa.append(bb)
 
     i = 0
@@ -746,10 +773,20 @@ def spider_nyyw(request):
         date = re.findall(r'\((.+)\)', str(data))
         # print(str(date))
         aa[i]['date'] = date[0]
+        aa[i]['id'] = i + 1
+        # models.Nyyw.objects.bulk_create(aa)
         i += 1
 
-    # print(aa)
 
+    #删除 重新创建数据表
+    models.Nyyw.objects.all().delete()
+    batch = [models.Nyyw(id=row['id'], title=row['title'],herf=row['herf'],date=row['date'],daa = row['daa'],body=row['body'],picherf=row['picherf']) for row in aa]
+    models.Nyyw.objects.bulk_create(batch)
 
-    return HttpResponse(json.dumps(aa, ensure_ascii=False),content_type='application/json; charset=utf-8')
-
+    # 更新数据表
+    # i = 1
+    # for row in aa:
+    #     models.Nyyw.objects.filter(id=i).update(title=row['title'], herf=row['herf'], daa=row['daa'], date=row['date'],
+    #                                             body=row['body'],
+    #                                             picherf=row['picherf'])
+    #     i += 1

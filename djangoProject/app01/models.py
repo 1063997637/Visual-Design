@@ -352,3 +352,17 @@ class Tea_and_fruit_yield(models.Model):
     class Meta:
         managed = False
         db_table = '茶叶水果产量_csv'
+
+
+class Nyyw(models.Model):
+    id = models.IntegerField(primary_key=True)
+    title = models.TextField(blank=True, null=True)
+    herf = models.TextField(blank=True, null=True)
+    daa = models.TextField(blank=True, null=True)
+    date = models.DateField(blank=True, null=True)
+    body = models.TextField(blank=True, null=True)
+    picherf = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'nyyw'

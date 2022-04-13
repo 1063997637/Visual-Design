@@ -18,9 +18,11 @@ from django.urls import path
 
 from app01 import views
 
+start_spider = views.nyyw_run()
+
 urlpatterns = [
     # path('admin/', admin.site.urls),
-     path('index/', views.index ),
+    path('index/', views.index ),
     # path('shuiziyuan/',views.shuiziyuan ),
     # path('gongyongshui/',views.gongyongshui ),
     # path('yunshuluxian/',views.yunshuluxian ),
@@ -139,6 +141,10 @@ urlpatterns = [
 
     path('spider/nyyw', views.spider_nyyw),
 
+    path('nyyw/title', views.nyyw_title),
+    path('nyyw/body' , views.nyyw_body.as_view()),
+
+    # path('start/spider',views.func_run())
 
 
 
