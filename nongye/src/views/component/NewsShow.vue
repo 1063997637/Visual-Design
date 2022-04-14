@@ -1,12 +1,17 @@
 <template>
   <div class="scroll">
-    <div>今日农业看点</div>
-    <vue3-seamless-scroll :list="localnews" :step="0.5" :hover="true">
-      <div class="item" v-for="(item, index) in localnews" :key="index">
-        <span :data-obj="JSON.stringify(item)" @click="handleButton">{{
-          item.title
-        }}</span>
-        <span>{{ item.id }}</span>
+    <div>近日农业看点</div>
+    <vue3-seamless-scroll
+      :list="this.onlinenews"
+      :step="0.5"
+      :hover="true"
+      v-if="this.onlinenews.length > 0"
+    >
+      <div class="item" v-for="(item, index) in this.onlinenews" :key="index">
+        <span :data-obj="JSON.stringify(item)" @click="handleButton">
+          {{ item.title }}
+        </span>
+        <span>{{ item.date }}</span>
       </div>
     </vue3-seamless-scroll>
   </div>
@@ -19,44 +24,7 @@ import axis from "axios";
 export default defineComponent({
   data() {
     return {
-      list: [
-        {
-          title: "Vue3.0 无缝滚动组件展示数据第1条",
-          date: "aaaaaa",
-        },
-        {
-          title: "Vue3.0 无缝滚动组件展示数据第2条",
-          date: "什么什么什么什么",
-        },
-        {
-          title: "Vue3.0 无缝滚动组件展示数据第3条",
-          date: "什么什么什么什么",
-        },
-        {
-          title: "Vue3.0 无缝滚动组件展示数据第4条",
-          date: Date.now(),
-        },
-        {
-          title: "Vue3.0 无缝滚动组件展示数据第5条",
-          date: Date.now(),
-        },
-        {
-          title: "Vue3.0 无缝滚动组件展示数据第6条",
-          date: Date.now(),
-        },
-        {
-          title: "Vue3.0 无缝滚动组件展示数据第7条",
-          date: Date.now(),
-        },
-        {
-          title: "Vue3.0 无缝滚动组件展示数据第8条",
-          date: Date.now(),
-        },
-        {
-          title: "Vue3.0 无缝滚动组件展示数据第9条",
-          date: Date.now(),
-        },
-      ],
+      newsurl: "http://172.17.12.75:8000/nyyw/title",
       onlinenews: [],
       localnews: [
         { id: 1, title: "2022年大学生志愿服务西部计划启动" },
@@ -124,17 +92,15 @@ export default defineComponent({
   },
   methods: {
     getnewstitle() {
-      axis.get("http://43.138.199.177:8000/nyyw/title").then((res) => {
-        console.log(res.data);
-        res.replace
-        JSON.parse()
+      axis.get(this.newsurl).then((res) => {
+        // console.log(res);
         for (let i = 0; i < res.data.length; i++) {
-          var it1 = res.data[i].id;
-          var it2 = res.data[i].title;
-          var it3 = res.data[i].date;
-          var item = { name: it1, value: it2 ,date:it3};
-          that.propProvince.push(item);
+          this.onlinenews.push({
+            title: res.data[i].title,
+            date: res.data[i].date,
+          });
         }
+        // console.log(this.onlinenews);
       });
     },
     handleButton(e) {
@@ -145,12 +111,7 @@ export default defineComponent({
   },
   mounted() {
     this.getnewstitle();
-    // setInterval(() => {
-    //   this.list.push({
-    //     title: "我是新增的一条数据",
-    //     date: Date.now(),
-    //   });
-    // }, 10000);
+    console.log(this.onlinenews);
   },
 });
 </script>
