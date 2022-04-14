@@ -1,5 +1,12 @@
 <template>
-  <div class="content-body">
+  <div
+    class="content-body"
+    v-bind:style="{
+      backgroundImage: 'url(' + bg + ')',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: '100% 100%',
+    }"
+  >
     <!-- <div class="header">
       <div class="header-left">
         <span>水资源分布情况</span>
@@ -15,7 +22,7 @@
           <div class="left-top public-bg">
             <!-- <div class="public-title">地表水和地下水资源</div> -->
             <!-- 加上v-if,使得每次加载都重新渲染 -->
-            <div class="map" id="avragewater" v-if="true"></div>
+            <div class="map" id="avragewater"></div>
           </div>
           <div class="left-con public-bg">
             <!-- <div class="public-title">各省人均水资源量</div> -->
@@ -55,14 +62,15 @@ import * as echarts from "echarts";
 import * as chinaMap from "./china.json";
 export default {
   data() {
-    return {};
+    return {
+      bg: require('../img/bg.jpg')
+    };
   },
   methods: {
     initCharts_mid() {
       var myChart = echarts.init(document.getElementById("midmap"));
       // 注册地图
       echarts.registerMap("china", chinaMap);
-
       //配置数据
       var option = {
         title: {
@@ -70,6 +78,9 @@ export default {
           textStyle: {
             color: "#5881c4",
           },
+        },
+        tooltip: {
+          trigger: "item",
         },
         series: [
           {
@@ -126,7 +137,10 @@ export default {
           },
         ],
         visualMap: {
-          min: 800,
+          label: {
+            show: true,
+          },
+          min: 10,
           max: 4000,
           text: ["High", "Low"],
           bottom: 100,
@@ -138,7 +152,7 @@ export default {
           },
         },
       };
-      myChart.setOption(option);
+      myChart.setOption(option, true);
     },
     initCharts_avragewater() {
       // const sdata = index.fetchData();
@@ -499,7 +513,7 @@ export default {
   mounted() {
     this.initCharts_mid();
     this.initCharts_avragewater();
-    this.initCharts_leftmid();
+    // this.initCharts_leftmid();//做测试用
     // this.initCharts_leftdown();
     this.initCharts_righttop();
     // this.initCharts_rightmid();
@@ -510,9 +524,9 @@ export default {
 
 <style>
 .content-body {
-  width: 99%;
-  height: 93%;
-  background: #0d325f;
+  width: 100%;
+  height: 100%;
+  /* background-image: "../img/bg.jpg"; */
   /* background: #ffffff; */
   background-size: 100% 100%;
   position: absolute;
@@ -520,7 +534,6 @@ export default {
 .header {
   height: 10%;
   width: 100%;
-  border: 1px solid red;
 }
 .header .header-left {
   width: 50%;
@@ -562,7 +575,6 @@ export default {
   height: 100%;
   float: left;
   /* margin: 0 0.3%; */
-  border: 1px solid red;
 }
 .left-body .left-top {
   width: 100%;
@@ -606,14 +618,12 @@ export default {
   height: 100%;
   /* margin: 0 0.3%; */
   float: left;
-  border: 1px solid red;
 }
 .right-body {
   width: 30%;
   height: 100%;
   float: left;
   /* margin: 0 0.3%; */
-  border: 1px solid red;
 }
 .right-body .right-top {
   width: 100%;

@@ -9,22 +9,22 @@
   >
     <div class="nong">
       <router-link to="/nongguide">
-        <img src="../img/发芽.png" style="width: 50%; height: 50%" />
+        <img src="../../img/发芽.png" style="width: 50%; height: 50%" />
       </router-link>
     </div>
     <div class="lin">
       <router-link to="/mapuse">
-        <img src="../img/森林.png" style="width: 50%; height: 50%" />
+        <img src="../../img/森林.png" style="width: 50%; height: 50%" />
       </router-link>
     </div>
     <div class="mu">
       <router-link to="/viewtest">
-        <img src="../img/奶牛.png" style="width: 50%; height: 50%" />
+        <img src="../../img/奶牛.png" style="width: 50%; height: 50%" />
       </router-link>
     </div>
     <div class="yu">
       <router-link to="/viewtest">
-        <img src="../img/鱼.png" style="width: 50%; height: 50%" />
+        <img src="../../img/鱼.png" style="width: 50%; height: 50%" />
       </router-link>
     </div>
   </div>
@@ -34,7 +34,7 @@
 export default {
   data() {
     return {
-      bg: require("../img/bgr.jpg"),
+      bg: require("../../img/bgr.jpg"),
     };
   },
 };
