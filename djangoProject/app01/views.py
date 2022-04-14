@@ -698,6 +698,7 @@ def spider_nyyw(request):
 def nyyw_title(request):
     model = models.Nyyw.objects
     data = model.values('id', 'title', 'date')
+    # print(data[0])
     return HttpResponse(data, content_type='application/json; charset=utf-8')
 
 class nyyw_body(APIView):
@@ -705,7 +706,7 @@ class nyyw_body(APIView):
     def get(self,request):
         model = models.Nyyw.objects
         id = request.GET.get("id")
-        data = model.filter(id = id).values('title', 'daa', 'herf', 'picherf', 'body')
+        data = model.filter(id = id).values("title", "daa", "herf", "picherf", "body")
         return HttpResponse(data, content_type='application/json; charset=utf-8')
 
 
@@ -763,8 +764,10 @@ def nyyw_run():
         body1 = body1.replace("\"", "\'")
         body1 = body1.replace("\n", "")
         # print(body1)
-
-        bb = {'id': 0, 'title': title[0], 'herf': url1, 'date': 0, 'daa': daa[0], 'body': body1, 'picherf': url3}
+        url1 = url1.replace("http://", "")
+        url3 = url3.replace("http://", "")
+        daa = daa[0].replace(":", "：")
+        bb = {'id': 0, 'title': title[0], 'herf': url1, 'date': 0, 'daa': daa, 'body': body1, 'picherf': url3}
         # print(type(body[0]))
         aa.append(bb)
 

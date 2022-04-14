@@ -85,8 +85,8 @@ DATABASES = {
         # 'NAME': BASE_DIR / 'db.sqlite3',
 
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': '各省农业数据',
-        'HOST': '43.138.199.177',
+        'NAME': '各省农业数据', # 本地/服务器数据库为：各省农业信息/数据
+        'HOST': '43.138.199.177',  #127.0.0.1/43.138.199.177
         'PORT': 3306,
         'USER': 'root',
         'PASSWORD': 'root'
