@@ -826,7 +826,8 @@ def nyyw_run():
     import requests
 
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36 Edg/100.0.1185.36'}
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36 Edg/100.0.1185.36',
+        "Connection":"close"}
     url = 'http://www.agri.cn/V20/ZX/nyyw/'
     res = requests.get(url, headers=headers)  # 新闻的网址
     res.encoding = res.apparent_encoding
@@ -850,7 +851,9 @@ def nyyw_run():
 
         # 爬取新闻体
         headers1 = {
-            'User-Agent': 'Mozilla/5.0 (Linux; Android 10; Pixel 4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Mobile Safari/537.36'}
+            'User-Agent': 'Mozilla/5.0 (Linux; Android 10; Pixel 4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Mobile Safari/537.36',
+            "Connection": "close"
+            }
         res1 = requests.get(url1, headers=headers1)
         res1.encoding = res1.apparent_encoding
         soup1 = BeautifulSoup(res1.text, 'html.parser')
