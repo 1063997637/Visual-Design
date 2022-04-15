@@ -1,4 +1,5 @@
 import json
+import time
 
 from django.core import serializers
 from django.core.serializers import serialize
@@ -829,7 +830,7 @@ def nyyw_run():
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36 Edg/100.0.1185.36',
         "Connection":"close"}
     url = 'http://www.agri.cn/V20/ZX/nyyw/'
-    res = requests.get(url, headers=headers)  # 新闻的网址
+    res = requests.get(url, headers=headers,verify=False)  # 新闻的网址
     res.encoding = res.apparent_encoding
     # 根据网站的编码方式修改解码方式，因为网页的文字编码方式多种多样有UTF-8 GBK这些解码方式如果不一致容易发生乱码，所以解码方式最好不要统一，而是交给网页自己来决定
     soup = BeautifulSoup(res.text, 'html.parser')
@@ -854,9 +855,11 @@ def nyyw_run():
             'User-Agent': 'Mozilla/5.0 (Linux; Android 10; Pixel 4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Mobile Safari/537.36',
             "Connection": "close"
             }
-        res1 = requests.get(url1, headers=headers1)
+        res1 = requests.get(url1, headers=headers1,verify=False)
         res1.encoding = res1.apparent_encoding
         soup1 = BeautifulSoup(res1.text, 'html.parser')
+        res1.close()
+        time.sleep(0.05)
 
         rates2 = soup1.select('.hui_12-12')
         rates3 = soup1.select('.TRS_Editor')
