@@ -366,3 +366,38 @@ class Nyyw(models.Model):
     class Meta:
         managed = False
         db_table = 'nyyw'
+
+class Hnnyyw(models.Model):
+    id = models.IntegerField(primary_key=True)
+    title = models.TextField(blank=True, null=True)
+    herf = models.TextField(blank=True, null=True)
+    daa = models.TextField(blank=True, null=True)
+    date = models.DateField(blank=True, null=True)
+    body = models.TextField(blank=True, null=True)
+    picherf = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'hnnyyw'
+
+class Price(models.Model):
+    id = models.IntegerField(primary_key=True)
+    class_field = models.CharField(db_column='class', max_length=100)  # Field renamed because it was a Python reserved word.
+    variety = models.CharField(max_length=100)
+    unit = models.CharField(max_length=100)
+    p22_5 = models.FloatField(db_column='p22-5', blank=True, null=True)  # Field renamed to remove unsuitable characters.
+    p22_3 = models.FloatField(db_column='p22-3', blank=True, null=True)  # Field renamed to remove unsuitable characters.
+    p22_1 = models.FloatField(db_column='p22-1', blank=True, null=True)  # Field renamed to remove unsuitable characters.
+    p21_11 = models.FloatField(db_column='p21-11', blank=True, null=True)  # Field renamed to remove unsuitable characters.
+    p21_9 = models.FloatField(db_column='p21-9', blank=True, null=True)  # Field renamed to remove unsuitable characters.
+    p21_7 = models.FloatField(db_column='p21-7', blank=True, null=True)  # Field renamed to remove unsuitable characters.
+    p21_5 = models.FloatField(db_column='p21-5', blank=True, null=True)  # Field renamed to remove unsuitable characters.
+    p21_3 = models.FloatField(db_column='p21-3', blank=True, null=True)  # Field renamed to remove unsuitable characters.
+    p21_1 = models.FloatField(db_column='p21-1', blank=True, null=True)  # Field renamed to remove unsuitable characters.
+    p20_11 = models.FloatField(db_column='p20-11', blank=True, null=True)  # Field renamed to remove unsuitable characters.
+    p20_9 = models.FloatField(db_column='p20-9', blank=True, null=True)  # Field renamed to remove unsuitable characters.
+    p20_7 = models.FloatField(db_column='p20-7', blank=True, null=True)  # Field renamed to remove unsuitable characters.
+
+    class Meta:
+        managed = False
+        db_table = 'price'

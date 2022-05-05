@@ -140,9 +140,12 @@ urlpatterns = [
     path('tafy/sgcl', views.tafy_sgcl),
 
     path('spider/nyyw', views.spider_nyyw),
+    path('spider/hnnyyw', views.spider_hnnyyw),
 
     path('nyyw/title', views.nyyw_title),
     path('nyyw/body' , views.nyyw_body.as_view()),
+    path('hnnyyw/title', views.hnnyyw_title),
+    path('hnnyyw/body' , views.hnnyyw_body. as_view()),
 
     # path('start/spider',views.func_run())
 

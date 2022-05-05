@@ -4,8 +4,9 @@ import time
 from django.core import serializers
 from django.core.serializers import serialize
 from django.forms import model_to_dict
-from django.http import HttpResponse, JsonResponse
+# from django.http import HttpResponse, JsonResponse
 # from rest_framework import serializers
+from django.http import JsonResponse, HttpResponse
 from rest_framework.decorators import APIView
 
 # Create your views here.
@@ -25,29 +26,6 @@ def shuiziyuan(request):
     data = serializers.serialize("json", szy, ensure_ascii=False)
     return HttpResponse(data, content_type='application/json; charset=utf-8')
 
-    # all_water = models.water_resource.objects.filter(年份 = '2020' ) #最近年份
-    #
-    # all_water_data = [{'省份','水资源总量(亿立方米)','地表水资源量(亿立方米)','地下水资源量(亿立方米)','地表水与地下水资源重复量(亿立方米)','人均水资源量(立方米 / 人)'}]
-
-    # list_dict = all_water.values()
-    # print(all_water)
-    # for obj in all_water:
-    #     print(obj.id,obj.省份 ,obj.人均水资源量_立方米_人_field,obj.地下水资源量_亿立方米_field)
-    # print(obj.value)
-
-    # print(list_dict)    #111
-    # ret_list = list(list_dict)
-    # return HttpResponse(ret_list, safe=False)
-
-    # data = serializers.serialize("json", all_water,ensure_ascii=False)
-    # return HttpResponse(data, content_type='application/json; charset=utf-8')
-
-    # return HttpResponse("hunan ziyuan data")
-
-
-#
-
-
 # # 供用水情况
 # def gongyongshui(request):
 #     year = models.water_supply.objects.values().filter(供水总量_亿立方米_field__isnull=False).first().get('年份')
@@ -56,60 +34,7 @@ def shuiziyuan(request):
 #     gysqk = models.water_supply.objects.filter(年份=year)
 #     data = serializers.serialize("json", gysqk, ensure_ascii=False)
 #     return HttpResponse(data, content_type='application/json; charset=utf-8')
-#
-# # 运输线路长度
-# def yunshuluxian(request):
-#     year = models.transportation_route.objects.values().filter(内河航道里程_万公里_field__isnull = False).first().get('年份')
-#     ysxlcd = models.transportation_route.objects.filter(年份=year)
-#     data = serializers.serialize("json", ysxlcd, ensure_ascii=False)
-#     return HttpResponse(data, content_type='application/json; charset=utf-8')
-#
-#
-# # 货运量
-# def huoyun(request):
-#     year = models.freight_transport.objects.values().filter(货运量_万吨_field__isnull=False).first().get('年份')
-#     hyl = models.freight_transport.objects.filter(年份=year)
-#     data = serializers.serialize("json", hyl, ensure_ascii=False)
-#     return HttpResponse(data, content_type='application/json; charset=utf-8')
-#
-# # 客运量
-# def keyun(request):
-#     year = models.passenger_volume.objects.values().filter(客运量_万人_field__isnull=False).first().get('年份')
-#     kyl = models.passenger_volume.objects.filter(年份=year)
-#     data = serializers.serialize("json", kyl, ensure_ascii=False)
-#     return HttpResponse(data, content_type='application/json; charset=utf-8')
-#
-# # 森林资源
-# def senlinziyuan(request):
-#     year = models.forest_resources.objects.values().filter(林业用地面积_万公顷_field__isnull=False).first().get('年份')
-#     slzy = models.forest_resources.objects.filter(年份=year)
-#     data = serializers.serialize("json", slzy, ensure_ascii=False)
-#     return HttpResponse(data, content_type='application/json; charset=utf-8')
-#
-# # 造林面积
-#
-# def zaolinmianji(request):
-#     year = models.afforestation_area.objects.values().filter(造林总面积_千公顷_field__isnull=False).first().get('年份')
-#     zlmj = models.afforestation_area.objects.filter(年份=year)
-#     data = serializers.serialize("json", zlmj, ensure_ascii=False)
-#     return HttpResponse(data, content_type='application/json; charset=utf-8')
-#
-# # 有色金属非金属
-# def yousefeijinshu(request):
-#     year = models.non_ferrous_metals.objects.values().filter(铜矿储量_万吨_field__isnull=False).first().get('年份')
-#     ysjs = models.non_ferrous_metals.objects.filter(年份=year)
-#     data = serializers.serialize("json", ysjs, ensure_ascii=False)
-#     return HttpResponse(data, content_type='application/json; charset=utf-8')
-#
-#
-#
-# # 黑色金属能源
-# def heisenengyuan(request):
-#     year = models.Main_energy_ferrous_metal.objects.values().filter(石油储量_万吨_field__isnull=False).first().get('年份')
-#     hsjs = models.Main_energy_ferrous_metal.objects.filter(年份=year)
-#     data = serializers.serialize("json", hsjs, ensure_ascii=False)
-#     return HttpResponse(data, content_type='application/json; charset=utf-8')
-#
+
 
 
 def ooap_lscl(request):
@@ -875,6 +800,11 @@ def spider_nyyw(request):
     return HttpResponse('农业要闻更新成功！！')
 
 
+def spider_hnnyyw(request):
+    hnnyyw_run()
+    return HttpResponse('湖南农业要闻更新成功！！')
+
+
 def nyyw_title(request):
     model = models.Nyyw.objects
     data = model.values('id', 'title', 'date')
@@ -887,6 +817,24 @@ class nyyw_body(APIView):
 
     def get(self, request):
         model = models.Nyyw.objects
+        id = request.GET.get("id")
+        data = model.filter(id=id).values("title", "daa", "herf", "picherf", "body")
+        data = list(data)
+        return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
+
+
+def hnnyyw_title(request):
+    model = models.Hnnyyw.objects
+    data = model.values('id', 'title', 'date')
+    # print(data[0])
+    data = list(data)
+    return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
+
+
+class hnnyyw_body(APIView):
+
+    def get(self, request):
+        model = models.Hnnyyw.objects
         id = request.GET.get("id")
         data = model.filter(id=id).values("title", "daa", "herf", "picherf", "body")
         data = list(data)
@@ -979,3 +927,71 @@ def nyyw_run():
     #                                             body=row['body'],
     #                                             picherf=row['picherf'])
     #     i += 1
+
+
+def hnnyyw_run():
+    import json
+    import re
+    import unicodedata
+
+    from bs4 import BeautifulSoup
+    import requests
+    from lxml import etree
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36 Edg/100.0.1185.36'}
+    url = 'http://www.agri.cn/province/hunan/dsxxlb/'  # http://www.agri.cn/V20/ZX/nyyw/
+    res = requests.get(url, headers=headers)  # 新闻的网址
+    res.encoding = res.apparent_encoding
+    # 根据网站的编码方式修改解码方式，因为网页的文字编码方式多种多样有UTF-8 GBK这些解码方式如果不一致容易发生乱码，所以解码方式最好不要统一，而是交给网页自己来决定
+    soup = BeautifulSoup(res.text, 'html.parser')
+
+    rates = soup.select('.lb_m12 li')
+    rates1 = soup.select('li')
+    # bJson = json.dumps(rates, ensure_ascii=False)
+
+    aa = []
+    p = 0
+    for data in rates:
+        # print(type(data))
+        # bb = {}
+        # temp = re.findall(r'li><.+</li>', unicodedata.normalize('NFKC', str(data)), re.S)  # 多行匹配 ， 去除Unicode的空格
+        title = re.findall(r'title\=\"(.+)\"', unicodedata.normalize('NFKC', str(data)), re.S)
+        herf = re.findall((r'href\=\"\.\/(.+)\" title'), unicodedata.normalize('NFKC', str(data)), re.S)
+        date = re.findall((r'span\>\((.+)\)'), unicodedata.normalize('NFKC', str(data)), re.S)
+        url1 = url + herf[0]  # 新闻的url
+
+        url3 = ""
+        # print(url1)
+        # 爬取新闻体
+        headers1 = {
+            'User-Agent': 'Mozilla/5.0 (Linux; Android 10; Pixel 4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Mobile Safari/537.36'}
+        res1 = requests.get(url1, headers=headers1)
+        res1.encoding = res1.apparent_encoding
+        soup1 = BeautifulSoup(res1.text, 'html.parser')
+
+        rates2 = soup1.select('.nr_m12')
+        rates3 = soup1.select('.nr_m16')
+
+        daahtml = soup1.select('.nr_m15')
+        daa = re.findall(r'\<span\>(.+)\<\/span', unicodedata.normalize('NFKC', str(daahtml)))  # date and author
+
+        daa[0] = daa[0].replace('</span><span>', ' ')
+        picherf = re.findall(r'src\=\"(.+?)\" src\=\"', unicodedata.normalize('NFKC', str()))
+        for i in picherf:
+            url3 = url3 + url1 + "/" + i + " "
+        body1 = str(rates3[0])
+        # print(body1)
+        daa = daa[0].replace(":", "：")
+        # url1 = url1.replace("//", "/")
+        # print(date[0])
+        p = p + 1
+        bb = {'id': p, 'title': title[0], 'herf': url1, 'date': date[0], 'daa': daa, 'body': body1, 'picherf': url3}
+        # print(type(body[0]))
+        aa.append(bb)
+        # print(date)
+    # print(aa[2]["id"])
+    models.Hnnyyw.objects.all().delete()
+    batch = [models.Hnnyyw(id=row['id'], title=row['title'], herf=row['herf'], date=row['date'], daa=row['daa'],
+                           body=row['body'], picherf=row['picherf']) for row in aa]
+    models.Hnnyyw.objects.bulk_create(batch)
