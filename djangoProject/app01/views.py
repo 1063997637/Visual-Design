@@ -794,6 +794,18 @@ def tafy_sgcl(request):
     return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
 
 
+
+class price(APIView):
+
+    def get(self, request):
+        model = models.Price.objects
+        id = request.GET.get("id")
+        data = model.filter(id=id).values('class_field', 'variety','unit','p20_7','p20_9','p21_1','p21_3','p21_5','p21_7','p21_9','p21_11','p22_1','p22_3','p22_5','yc')
+        data = list(data)
+        return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
+
+
+
 # 手动爬取  农业要闻 第一页的内容
 def spider_nyyw(request):
     nyyw_run()
@@ -811,6 +823,8 @@ def nyyw_title(request):
     # print(data[0])
     data = list(data)
     return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
+
+
 
 
 class nyyw_body(APIView):

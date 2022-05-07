@@ -397,6 +397,7 @@ class Price(models.Model):
     p20_11 = models.FloatField(db_column='p20-11', blank=True, null=True)  # Field renamed to remove unsuitable characters.
     p20_9 = models.FloatField(db_column='p20-9', blank=True, null=True)  # Field renamed to remove unsuitable characters.
     p20_7 = models.FloatField(db_column='p20-7', blank=True, null=True)  # Field renamed to remove unsuitable characters.
+    yc = models.FloatField(blank=True, null=True)
 
     class Meta:
         managed = False

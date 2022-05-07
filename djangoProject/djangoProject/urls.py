@@ -147,6 +147,8 @@ urlpatterns = [
     path('hnnyyw/title', views.hnnyyw_title),
     path('hnnyyw/body' , views.hnnyyw_body. as_view()),
 
+    path('price', views.price(). as_view()),
+
     # path('start/spider',views.func_run())
 
 
