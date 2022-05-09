@@ -1,8 +1,8 @@
 <template>
   <div class="content-body">
     <div class="title">
-      <div class="left"><router-link to="/">首页</router-link></div>
-      <div class="right"><router-link to="/pricepage">数据详情</router-link></div>
+      <div class="left"><router-link to="/"><button class="tab" round>实时信息</button></router-link></div>
+      <div class="right"><router-link to="/pricepage"><button class="tab" round>价格分析</button></router-link></div>
     </div>
     <div class="leftmap">
       <div id="Home" style="width: 100%; height: 100%" v-if="true"></div>
@@ -43,20 +43,20 @@ export default {
       newsbo:
         "  五一前夕，万佛山侗寨风景名胜区管理处工作人员杨秀仟——网络达人潇洒仟哥来到皇都侗文化村，实地品尝特色美食、体验农耕文化等，用镜头推介皇都村美丽的乡村风貌，感受乡村振兴发展成果。皇都村依山傍水，一栋栋民居错落有致，横跨江面两岸的普修桥与袅袅炊烟的侗寨、风光秀丽、和美富足……在乡村振兴中，皇都村村居面貌焕然一新，乡村秩序、环境面貌大幅改善，基础设施建设和公共服务配套得到有效提升，同时还培育了中药材、果蔬、茶叶、稻田养鱼等优势特色农业，不断助推乡村振兴发展，产业兴旺、生态宜居、乡风文明、治理有效、生活富裕的乡村已初步形成，人民群众获得感显著提升。近年来，我县加快“文旅 ”融合发展，激发市场活力，积极探索走出一条乡村振兴的特色文旅线路。在“旅游+产业”上，依托传统村落、民俗风情文化、重点培育中药材、果蔬、茶叶、羊肚菌、稻田养鱼等优势特色农业，建成以观光采摘、农事体验、生态休闲、民俗文化体验为主的风情体验旅游业态，村级产业已经实现产业分红。",
       staticdata: [
-        { name: "湘西土家族苗族自治州", value: 10000 },
-        { name: "张家界市", value: 13000 },
-        { name: "常德市", value: 11000 },
-        { name: "益阳市", value: 12000 },
-        { name: "岳阳市", value: 13000 },
-        { name: "怀化市", value: 14000 },
+        { name: "湘西土家族苗族自治州", value: 1467 },
+        { name: "张家界市", value: 1031 },
+        { name: "常德市", value: 1436 },
+        { name: "益阳市", value: 1602 },
+        { name: "岳阳市", value: 1265 },
+        { name: "怀化市", value: 1588 },
         { name: "娄底市", value: 15000 },
-        { name: "长沙市", value: 16000 },
-        { name: "湘潭市", value: 17000 },
-        { name: "株洲市", value: 18000 },
-        { name: "邵阳市", value: 19000 },
-        { name: "衡阳市", value: 20000 },
-        { name: "永州市", value: 21000 },
-        { name: "郴州市", value: 23000 },
+        { name: "长沙市", value: 1329 },
+        { name: "湘潭市", value: 1423 },
+        { name: "株洲市", value: 1455 },
+        { name: "邵阳市", value: 1484 },
+        { name: "衡阳市", value: 1434 },
+        { name: "永州市", value: 1655 },
+        { name: "郴州市", value: 1726 },
       ],
       showModel: false,
     };
@@ -76,7 +76,7 @@ export default {
       var option = {
         title: {
           left: "center",
-          text: "湖南省",
+          text: "湖南省降水量",
           textStyle: {
             color: "#5881c4",
           },
@@ -86,7 +86,7 @@ export default {
         },
         series: [
           {
-            name: "粮食总产量(万吨)",
+            name: "降水量(毫米)",
             data: this.staticdata,
             type: "map",
             map: "hunan",
@@ -111,8 +111,8 @@ export default {
           label: {
             show: true,
           },
-          min: 10000,
-          max: 50000,
+          min: 1000,
+          max: 2000,
           text: ["High", "Low"],
           bottom: 100,
           left: 10,
@@ -163,6 +163,10 @@ export default {
   
   /* border: 1px solid red; */
 }
+/* .title .left .tab{
+      background: green;
+
+} */
 .title .right {
   width: 50%;
   height: 100%;
@@ -171,6 +175,10 @@ export default {
 
   position: relative;
 }
+/* .title .right .tab{
+      background: url("./img/bnt.png");
+
+} */
 .content-body .leftmap {
   top: 3.5%;
   left: 1.5%;

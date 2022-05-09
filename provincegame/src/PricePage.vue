@@ -1,9 +1,9 @@
 <template>
   <div class="whole-body">
     <div class="title">
-      <div class="left"><router-link to="/">首页</router-link></div>
+      <div class="left"><router-link to="/">实时信息</router-link></div>
       <div class="right">
-        <router-link to="/pricepage">数据详情</router-link>
+        <router-link to="/pricepage">价格分析</router-link>
       </div>
     </div>
     <div class="left-body">
