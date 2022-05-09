@@ -1,8 +1,8 @@
 <template>
   <div class="content-body">
     <div class="title">
-      <div class="left"><router-link to="/"><button class="tab" round>实时信息</button></router-link></div>
-      <div class="right"><router-link to="/pricepage"><button class="tab" round>价格分析</button></router-link></div>
+      <div class="left"><router-link to="/">实时信息</router-link></div>
+      <div class="right"><router-link to="/pricepage">价格分析</router-link></div>
     </div>
     <div class="leftmap">
       <div id="Home" style="width: 100%; height: 100%" v-if="true"></div>
@@ -137,7 +137,7 @@ export default {
 
 <style scoped>
 .content-body {
-  background: url("./img/newbg.jpg");
+  background: #FFEFD5;
   /* background:white; */
   width: 100%;
   height: 100%;
@@ -206,7 +206,6 @@ export default {
   width: 5rem;
   height: 1rem;
   display: block;
-  background: url("./img/title_left_bg.png");
   /* background-size: cover; */
   background-size: 100% 100%;
 }
@@ -217,7 +216,6 @@ export default {
   width: 1.5rem;
   height: 1.5rem;
   display: block;
-  background: url(./img/border_bg.jpg) no-repeat;
   background-size: 100% 100%;
 }
 .border_bg_leftBottom {
@@ -227,7 +225,6 @@ export default {
   width: 1.5rem;
   height: 1.5rem;
   display: block;
-  background: url(./img/border_bg.jpg) no-repeat;
   background-size: 100% 100%;
 }
 .border_bg_rightBottom {
@@ -237,7 +234,6 @@ export default {
   width: 1.5rem;
   height: 1.5rem;
   display: block;
-  background: url(./img/title_right_bg.png) no-repeat;
   background-size: 100% 100%;
 }
 .content-body .right-top {

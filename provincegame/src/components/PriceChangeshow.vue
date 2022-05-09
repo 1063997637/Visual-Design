@@ -171,7 +171,7 @@ export default {
           type: "legendToggleSelect",
           name: option.legend.data[++i % option.legend.data.length],
         });
-      }, 1500);
+      }, 5000);
     },
     getpricedata() {
       var that = this;

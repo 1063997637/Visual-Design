@@ -83,7 +83,7 @@ export default {
 
 <style scoped>
 .whole-body {
-  background: url("./img/newbg.jpg");
+  background: #FFEFD5;
   /* background-size: 200% 100%; */
   width: 100%;
   height: 100%;
